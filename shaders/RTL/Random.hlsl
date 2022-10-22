@@ -45,5 +45,5 @@ RTL_Random RTL_Create_Random(int hash)
 
 uint RTL_Generate_Hash(float2 uv)
 {
-    return uint(_rtlUVrand(uv) * RTL_UINT_MAX);
+    return _rtlGenHash(uint(_rtlUVrand(uv) * RTL_UINT_MAX));
 }

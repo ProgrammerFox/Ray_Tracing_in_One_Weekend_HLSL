@@ -1,4 +1,7 @@
 #include "RTL/Random.hlsl"
+#include "RTL/Camera.hlsl"
+#include "RTL/TraceRay.hlsl"
+
 
 
 RWTexture2D<float4> img_output : register(u0);
@@ -14,10 +17,22 @@ void main( uint3 dispatchThreadID : SV_DispatchThreadID, uint3 groupThreadID : S
 	img_output.GetDimensions(ScreenSize.x, ScreenSize.y);
 	
 	float2 uv = dispatchThreadID.xy / (float)ScreenSize;
+	
+	float3 origin;
+    float3 horizontal;
+    float3 vertical;
+    float3 lower_left_corner;
+	RTL_Camera(origin, horizontal, vertical, lower_left_corner);
+	
+	float3 direction = lower_left_corner + uv.x*horizontal + uv.y*vertical - origin;
+	
+	direction = normalize(direction);
+	
+	float3 color = RTL_Get_Ray_Color(origin, direction);
+	
+	//RTL_Random rand = RTL_Create_Random(RTL_Generate_Hash(uv) + uint(roll * 100));
+	//float l = rand.randomFloat();
+	
 
-
-	RTL_Random rand = RTL_Create_Random(RTL_Generate_Hash(uv) + uint(roll * 100));
-	float l = rand.randomFloat();
-	float a = _rtlUVrand(uv) * RTL_UINT_MAX;//Random(dispatchThreadID.x * 1000 + dispatchThreadID.y + roll * 100);
-    img_output[dispatchThreadID.xy] = float4(l, l, l, 1);
+    img_output[dispatchThreadID.xy] = float4(color.x, color.y, color.z, 1);
 }
