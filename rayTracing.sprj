@@ -6,6 +6,11 @@
 			<groupsize x="32" y="32" z="1" />
 			<variables>
 				<variable type="float" name="roll" system="Time" />
+				<variable type="int" name="RefreshImage">
+					<row>
+						<value>-20</value>
+					</row>
+				</variable>
 			</variables>
 			<macros />
 		</pass>
@@ -33,16 +38,19 @@
 	<objects>
 		<object type="image" name="ComputeOutput" width="512" height="512" format="R32G32B32A32_FLOAT">
 			<bind slot="0" name="Compute" uav="1" />
-			<bind slot="0" name="Simple" uav="0" />
 		</object>
 		<object type="buffer" name="figuresBuffer" size="144" format="int4;float4;float4" pausedpreview="false">
 			<bind slot="1" name="Compute" />
 		</object>
+		<object type="image" name="ResultImage" width="512" height="512" format="R32G32B32A32_FLOAT">
+			<bind slot="2" name="Compute" uav="1" />
+			<bind slot="0" name="Simple" uav="0" />
+		</object>
 	</objects>
 	<cameras />
 	<settings>
-		<entry type="property" name="Compute" item="pipe" />
 		<entry type="file" name="Compute" shader="cs" />
+		<entry type="pinned" name="RefreshImage" owner="Compute" />
 		<entry type="camera" fp="false">
 			<distance>4</distance>
 			<pitch>28</pitch>

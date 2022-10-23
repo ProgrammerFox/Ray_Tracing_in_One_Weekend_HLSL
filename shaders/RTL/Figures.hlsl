@@ -1,4 +1,8 @@
+#ifndef FIGURES
+#define FIGURES
+
 #include "Intersections.hlsl"
+#include "Material.hlsl"
 
 #define RTL_Figures_Count 3
 
@@ -15,16 +19,20 @@ struct RTL_Figure
 	
 	bool Hit(float3 origin, float3 direction, out RTL_Hit_Record rec)
 	{
+		bool res = false;
+
 		if (info.x == RTL_Shape_Sphere)
 		{
-			return RTL_Sphere_Intersection(origin, direction, float3(position.x, position.y, position.z), shape.x, rec);
+			res = RTL_Sphere_Intersection(origin, direction, float3(position.x, position.y, position.z), shape.x, rec);
 		}
 		else if (info.x == RTL_Shape_Box)
 		{
-			return RTL_Box_Intersection(origin, direction, float3(position.x, position.y, position.z), float3(shape.x, shape.y, shape.z), rec);
+			res = RTL_Box_Intersection(origin, direction, float3(position.x, position.y, position.z), float3(shape.x, shape.y, shape.z), rec);
 		}
 
-		return false;
+		rec.material_index = info.w;
+
+		return res;
 	}
 	
 };
@@ -88,3 +96,5 @@ static const RTL_Figure RTL_Figures_Array[3] =
 };
 
 */
+
+#endif

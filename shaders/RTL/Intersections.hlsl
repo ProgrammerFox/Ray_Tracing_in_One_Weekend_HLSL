@@ -1,4 +1,5 @@
-
+#ifndef INTERSECTION
+#define INTERSECTION
 
 struct RTL_Hit_Record 
 {
@@ -6,6 +7,7 @@ struct RTL_Hit_Record
     float3 normal;
     float t;
     bool front_face;
+    uint material_index;
 
     void set_face_normal(float3 direction, const float3 outward_normal) 
     {
@@ -58,3 +60,4 @@ bool RTL_Box_Intersection(float3 ro1, float3 rd, float3 boxPos, float3 boxSize, 
 }
 
 
+#endif

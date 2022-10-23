@@ -1,3 +1,6 @@
+#ifndef RANDOM
+#define RANDOM
+
 #define RTL_UINT_MAX 4294967295.0
 
 
@@ -32,6 +35,18 @@ struct RTL_Random
         hash = _rtlGenHash(hash);
         return _rtlRandom(hash);
     }
+    float3 randomInSphere()
+    {
+	    float3 rand = float3(randomFloat(), randomFloat(), randomFloat());
+	    float theta = rand.x * 2.0 * 3.14159265;
+	    float v = rand.y;
+	    float phi = acos(2.0 * v - 1.0);
+	    float r = pow(rand.z, 1.0 / 3.0);
+	    float x = r * sin(phi) * cos(theta);
+	    float y = r * sin(phi) * sin(theta);
+	    float z = r * cos(phi);
+	    return float3(x, y, z);
+    }
 };
 
 RTL_Random RTL_Create_Random(int hash = 1337);
@@ -47,3 +62,5 @@ uint RTL_Generate_Hash(float2 uv)
 {
     return _rtlGenHash(uint(_rtlUVrand(uv) * RTL_UINT_MAX));
 }
+
+#endif

@@ -1,3 +1,8 @@
+#ifndef CAMERA
+#define CAMERA
+
+#include "Random.hlsl"
+
 struct RTL_Camera
 {
     float3 origin;
@@ -21,8 +26,13 @@ struct RTL_Camera
         vertical = float3(0, viewport_height, 0);
         lower_left_corner = origin - horizontal/2 - vertical/2 - float3(0, 0, focal_length);
     }
-    float3 Get_Ray(float2 uv)
+    float3 Get_Ray(float2 uv, RTL_Random rand)
     {
-        return lower_left_corner + uv.x * horizontal + uv.y * vertical - origin;
+        return lower_left_corner + (uv.x + (rand.randomFloat() - 0.5) / 512.0) * horizontal + (uv.y + (rand.randomFloat() - 0.5) / 512.0) * vertical - origin;
     }
 };
+
+
+
+
+#endif
