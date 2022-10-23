@@ -4,7 +4,7 @@
 #include "Intersections.hlsl"
 #include "Material.hlsl"
 
-#define RTL_Figures_Count 3
+#define RTL_Figures_Count 4
 
 #define RTL_Shape_Sphere 1
 #define RTL_Shape_Box 2
