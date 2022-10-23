@@ -5,10 +5,13 @@
 
 
 RWTexture2D<float4> img_output : register(u0);
+RWStructuredBuffer<RTL_Figure> Figures : register(u1);
 
 cbuffer varBuffer : register(b0) {
 	float roll;
 }
+
+
 
 [numthreads(16, 16, 1)]
 void main( uint3 dispatchThreadID : SV_DispatchThreadID, uint3 groupThreadID : SV_GroupThreadID, uint3 groupID : SV_GroupID )
@@ -18,17 +21,30 @@ void main( uint3 dispatchThreadID : SV_DispatchThreadID, uint3 groupThreadID : S
 	
 	float2 uv = dispatchThreadID.xy / (float)ScreenSize;
 	
-	float3 origin;
-    float3 horizontal;
-    float3 vertical;
-    float3 lower_left_corner;
-	RTL_Camera(origin, horizontal, vertical, lower_left_corner);
+	//float3 origin;
+    //float3 horizontal;
+    //float3 vertical;
+    //float3 lower_left_corner;
+	//RTL_Camera(origin, horizontal, vertical, lower_left_corner);
 	
-	float3 direction = lower_left_corner + uv.x*horizontal + uv.y*vertical - origin;
+	RTL_Camera camera;
+	camera.Gen_Camera();
+	
+	float3 origin = camera.origin;
+	origin += 0.0001;
+	float3 direction = camera.Get_Ray(uv);//lower_left_corner + uv.x*horizontal + uv.y*vertical - origin;
 	
 	direction = normalize(direction);
 	
-	float3 color = RTL_Get_Ray_Color(origin, direction);
+	RTL_World world;
+	//RTL_Figures = Figures;
+	
+	RTL_Figure RTL_Figures_Array[3];
+	RTL_Figures_Array[0] = RTL_Create_Sphere(Figures[0].position.xyz, Figures[0].shape.x, 0);
+	RTL_Figures_Array[1] = RTL_Create_Box(Figures[1].position.xyz, Figures[1].shape.xyz, 0);
+	RTL_Figures_Array[2] = RTL_Create_Sphere(Figures[2].position.xyz, Figures[2].shape.x, 0);
+	
+	float3 color = world.Get_Ray_Color(origin, direction, RTL_Figures_Array);
 	
 	//RTL_Random rand = RTL_Create_Random(RTL_Generate_Hash(uv) + uint(roll * 100));
 	//float l = rand.randomFloat();

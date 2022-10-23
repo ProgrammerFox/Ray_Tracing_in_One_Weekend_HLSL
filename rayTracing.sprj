@@ -35,9 +35,13 @@
 			<bind slot="0" name="Compute" uav="1" />
 			<bind slot="0" name="Simple" uav="0" />
 		</object>
+		<object type="buffer" name="figuresBuffer" size="144" format="int4;float4;float4" pausedpreview="false">
+			<bind slot="1" name="Compute" />
+		</object>
 	</objects>
 	<cameras />
 	<settings>
+		<entry type="property" name="Compute" item="pipe" />
 		<entry type="file" name="Compute" shader="cs" />
 		<entry type="camera" fp="false">
 			<distance>4</distance>
