@@ -8,6 +8,6 @@
 
 ## Images
 
-![Outdoors 1](https://raw.githubusercontent.com/ProgrammerFox/Ray_Tracing_in_One_Weekend_HLSL/tree/master/images/image1.png "Image1")
+![Outdoors 1](https://raw.githubusercontent.com/ProgrammerFox/Ray_Tracing_in_One_Weekend_HLSL/master/images/image1.png "Image1")
 
-![Outdoors 2](https://raw.githubusercontent.com/ProgrammerFox/Ray_Tracing_in_One_Weekend_HLSL/tree/master/images/image2.png "Image2")
+![Outdoors 2](https://raw.githubusercontent.com/ProgrammerFox/Ray_Tracing_in_One_Weekend_HLSL/master/images/image2.png "Image2")
