@@ -24,7 +24,7 @@ struct RTL_World
                 //color *= 0.5;
                 //float3 target = rec.p + rec.normal + rand.randomInSphere();
                 origin = rec.p;
-
+                //return rec.t / 100;
                 direction = materials[rec.material_index].scatter(direction, rand, rec);
                 color *= materials[rec.material_index].color.xyz;
                 //direction = normalize(target - origin);
@@ -36,12 +36,21 @@ struct RTL_World
         }
 
         
+        
         if (!wasntHit) return 0;
 
        // if (RTL_Sphere_Intersection(origin, direction, float3(0,0,-1), 0.5, rec))
        //    return rec.normal * 0.5 + 0.5;
        float t = 0.5 * (direction.y + 1.0);
        return color * ( (1.0 - t) * float3(1.0, 1.0, 1.0) + t * float3(0.5, 0.7, 1.0) );
+    }
+
+    float Get_Focus_Dist(float3 origin, float3 direction, RTL_Figure figures[RTL_Figures_Count], float default_focus)
+    {
+        RTL_Hit_Record rec;
+        if (!RTL_World_Hit(origin, direction, figures, rec)) return default_focus;
+        else return rec.t;
+        
     }
 };
 

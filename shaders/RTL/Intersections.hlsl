@@ -29,8 +29,8 @@ bool RTL_Sphere_Intersection(float3 ro, float3 rd, float3 ce, float ra, out RTL_
 
     rec.t = -b - d;
     rec.p = ro + rd * rec.t;
-    float3 outward_normal = (rec.p - ce) / ra; 
 
+    float3 outward_normal = (rec.p - ce) / ra; 
     rec.set_face_normal(rd, outward_normal);
 
     return true;
@@ -50,7 +50,7 @@ bool RTL_Box_Intersection(float3 ro1, float3 rd, float3 boxPos, float3 boxSize, 
     if( tN >= tF || tF < 0.0) return false; // no intersection
     
     rec.t = tN;
-    rec.p = ro + rd * rec.t;
+    rec.p = ro1 + rd * rec.t;
     
     float3 outward_normal = -sign(rd) * step(t1.yzx, t1.xyz) * step(t1.zxy, t1.xyz);
     rec.set_face_normal(rd, outward_normal);
@@ -59,5 +59,31 @@ bool RTL_Box_Intersection(float3 ro1, float3 rd, float3 boxPos, float3 boxSize, 
 
 }
 
+// The formulas were taken from the site: https://raytracing.github.io/books/RayTracingTheNextWeek.html
+
+bool RTL_AABB_Intersection(float3 ro, float3 rd, float3 vec_minimum, float3 vec_maximum, out RTL_Hit_Record rec)
+{
+    float t_min = 1e-4;
+    float t_max = 1e+10;
+
+    float minimum[3] = { vec_minimum.x, vec_minimum.y, vec_minimum.z };
+    float maximum[3] = { vec_maximum.x, vec_maximum.y, vec_maximum.z };
+
+    float origin[3] = { ro.x, ro.y, ro.z };
+    float direction[3] = { rd.x, rd.y, rd.z };
+
+    for (int a = 0; a < 3; a++) 
+    {
+        float t0 = min((minimum[a] - origin[a]) / direction[a],
+                       (maximum[a] - origin[a]) / direction[a]);
+        float t1 = max((minimum[a] - origin[a]) / direction[a],
+                       (maximum[a] - origin[a]) / direction[a]);
+        t_min = max(t0, t_min);
+        t_max = min(t1, t_max);
+        if (t_max <= t_min)
+            return false;
+    }
+    return true;
+}
 
 #endif

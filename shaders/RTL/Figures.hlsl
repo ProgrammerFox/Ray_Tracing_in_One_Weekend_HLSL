@@ -4,8 +4,9 @@
 #include "Intersections.hlsl"
 #include "Material.hlsl"
 
-#define RTL_Figures_Count 4
+#define RTL_Figures_Count 5
 
+#define RTL_Shape_AABB 0
 #define RTL_Shape_Sphere 1
 #define RTL_Shape_Box 2
 
@@ -61,6 +62,15 @@ bool RTL_World_Hit(float3 ro, float3 rd, RTL_Figure figures[RTL_Figures_Count], 
     return wasHit;
 }
 
+RTL_Figure RTL_Create_AABB(float3 minimum, float3 maximum, uint2 step)
+{
+	RTL_Figure newFigure;
+	newFigure.info = uint4(RTL_Shape_Box, step.x, step.y, 0);
+
+	newFigure.position = float4(minimum.x, minimum.y, minimum.z, 1);
+	newFigure.shape    = float4(maximum.x, maximum.y, maximum.z, 1);
+	return newFigure;
+}
 
 
 RTL_Figure RTL_Create_Sphere(float3 position, float radius, uint materialIndex)
@@ -82,6 +92,9 @@ RTL_Figure RTL_Create_Box(float3 position, float3 size, uint materialIndex)
 	newFigure.shape = float4(size.x, size.y, size.z, 1);
 	return newFigure;
 }
+
+
+
 
 
 /*

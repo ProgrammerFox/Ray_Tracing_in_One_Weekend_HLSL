@@ -47,6 +47,15 @@ struct RTL_Random
 	    float z = r * cos(phi);
 	    return float3(x, y, z);
     }
+
+    float3 randomInDisk()
+    {
+	    float r = sqrt(randomFloat());
+	    float theta = randomFloat() * 2 * 3.14159265;
+	    float x = r * cos(theta);
+	    float y = r * sin(theta);
+	    return float3(x, y, 0);
+    }
 };
 
 RTL_Random RTL_Create_Random(int hash = 1337);
