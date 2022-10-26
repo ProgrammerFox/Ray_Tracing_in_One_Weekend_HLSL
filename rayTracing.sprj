@@ -58,15 +58,25 @@
 			<bind slot="2" name="Compute" uav="1" />
 			<bind slot="0" name="Simple" uav="0" />
 		</object>
+		<object type="texture" path="HDRI-S\spaichingen_hill_4k.tga" vflip="false" min_filter="Linear" mag_filter="Nearest" wrap_s="Repeat" wrap_t="Repeat">
+			<bind slot="0" name="Compute" />
+		</object>
+		<object type="texture" path="HDRI-S\spaichingen_hill_4k_dark.tga" vflip="false" min_filter="Linear" mag_filter="Nearest" wrap_s="Repeat" wrap_t="Repeat">
+			<bind slot="1" name="Compute" />
+		</object>
+		<object type="texture" path="HDRI-S\spaichingen_hill_4k_mega_dark.tga" vflip="false" min_filter="Linear" mag_filter="Nearest" wrap_s="Repeat" wrap_t="Repeat">
+			<bind slot="2" name="Compute" />
+		</object>
 	</objects>
 	<cameras />
 	<settings>
+		<entry type="property" name="HDRI-S\spaichingen_hill_4k_mega_dark.tga" item="image3D" />
 		<entry type="file" name="Compute" shader="cs" />
 		<entry type="pinned" name="RefreshImage" owner="Compute" />
 		<entry type="camera" fp="false">
-			<distance>5</distance>
-			<pitch>26</pitch>
-			<yaw>162</yaw>
+			<distance>7</distance>
+			<pitch>9</pitch>
+			<yaw>219</yaw>
 			<roll>360</roll>
 		</entry>
 		<entry type="clearcolor" r="0" g="0" b="0" a="0" />

@@ -9,7 +9,7 @@ RWStructuredBuffer<RTL_Figure> RTL_Figures : register(u1);
 struct RTL_World
 {
     
-	float3 Get_Ray_Color(float3 origin, float3 direction, RTL_Random rand, RTL_Figure figures[RTL_Figures_Count], RTL_Material materials[RTL_Materials_Count])
+	float3 Get_Ray_Color(float3 origin, float3 direction, RTL_Random rand, RTL_Figure figures[RTL_Figures_Count], RTL_Material materials[RTL_Materials_Count], bool gen_hdri, out float3 res_direction)
     {
         float3 color = 1;
 
@@ -41,8 +41,13 @@ struct RTL_World
 
        // if (RTL_Sphere_Intersection(origin, direction, float3(0,0,-1), 0.5, rec))
        //    return rec.normal * 0.5 + 0.5;
-       float t = 0.5 * (direction.y + 1.0);
-       return color * ( (1.0 - t) * float3(1.0, 1.0, 1.0) + t * float3(0.5, 0.7, 1.0) );
+        
+        res_direction = direction;
+
+        if (!gen_hdri) return color;
+        //return color;
+        float t = 0.5 * (direction.y + 1.0);
+        return color * ( (1.0 - t) * float3(1.0, 1.0, 1.0) + t * float3(0.5, 0.7, 1.0) );
     }
 
     float Get_Focus_Dist(float3 origin, float3 direction, RTL_Figure figures[RTL_Figures_Count], float default_focus)

@@ -8,6 +8,10 @@ RWTexture2D<float4> img_output : register(u0);
 RWStructuredBuffer<RTL_Figure> Figures : register(u1);
 RWTexture2D<float4> res_img : register(u2);
 
+Texture2D<float4> HDRI : register(t0);
+Texture2D<float4> HDRI_dark : register(t1);
+Texture2D<float4> HDRI_mega_dark : register(t2);
+
 cbuffer varBuffer : register(b0) {
 	float roll;
 	int RefreshImage;
@@ -20,6 +24,9 @@ cbuffer varBuffer : register(b0) {
 [numthreads(16, 16, 1)]
 void main( uint3 dispatchThreadID : SV_DispatchThreadID, uint3 groupThreadID : SV_GroupThreadID, uint3 groupID : SV_GroupID )
 {
+	uint2 HDRI_Size;
+	HDRI.GetDimensions(HDRI_Size.x, HDRI_Size.y);
+
 	uint2 ScreenSize;
 	img_output.GetDimensions(ScreenSize.x, ScreenSize.y);
 	
@@ -40,7 +47,7 @@ void main( uint3 dispatchThreadID : SV_DispatchThreadID, uint3 groupThreadID : S
 	RTL_Material RTL_Materials_Array[4];
 	RTL_Materials_Array[0] = RTL_Create_Metal_Material(float3(0.1, 0.3, 0.8), 0.2);
 	RTL_Materials_Array[1] = RTL_Create_Lambertian_Material(float3(0.7, 0.1, 0.1));
-	RTL_Materials_Array[2] = RTL_Create_Lambertian_Material(float3(0.3, 0.8, 0.15));
+	RTL_Materials_Array[2] = RTL_Create_Lambertian_Material(float3(0.75, 0.75, 0.05));
 	RTL_Materials_Array[3] = RTL_Create_Dielectric_Material(float3(1, 1, 1), 1.5);
 	/*
 	RTL_Figure RTL_Figures_Array[50];
@@ -124,9 +131,28 @@ void main( uint3 dispatchThreadID : SV_DispatchThreadID, uint3 groupThreadID : S
 	
 	direction = normalize(direction);
 	
-
+	float3 hdri_rd;
 	
-	float3 color = world.Get_Ray_Color(origin, direction, rand, RTL_Figures_Array, RTL_Materials_Array);
+	float3 color = world.Get_Ray_Color(origin, direction, rand, RTL_Figures_Array, RTL_Materials_Array, false, hdri_rd);
+	
+	
+	float2 hdri_uv = float2(atan2(hdri_rd.x, hdri_rd.z), atan2(length(float2(hdri_rd.x, hdri_rd.z)), hdri_rd.y));
+	
+	//color = float3(hdri_uv.x, hdri_uv.y, 0);
+	
+	hdri_uv *= float2(HDRI_Size.x / 2, HDRI_Size.y);
+	hdri_uv /= 3.14159265;
+	hdri_uv += float2(HDRI_Size.x / 2, 0);
+	
+	uint2 hdri_point = uint2(uint(clamp(hdri_uv.x, 0, HDRI_Size.x)), uint(clamp(HDRI_Size.y - hdri_uv.y, 0, HDRI_Size.y)));
+	
+	//color = float3(hdri_point.x / (float)HDRI_Size.x * 0, hdri_point.y / (float)HDRI_Size.y, 0);
+	
+	float3 img_col = HDRI[hdri_point] + HDRI_dark[hdri_point] + HDRI_mega_dark[hdri_point];
+	
+	color *= img_col * img_col;
+	
+	
 	
 	//RTL_Random rand = RTL_Create_Random(RTL_Generate_Hash(uv) + uint(roll * 100));
 	//float l = rand.randomFloat();
