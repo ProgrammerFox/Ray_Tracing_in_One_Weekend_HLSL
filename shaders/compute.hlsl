@@ -44,11 +44,12 @@ void main( uint3 dispatchThreadID : SV_DispatchThreadID, uint3 groupThreadID : S
 	RTL_World world;
 	//RTL_Figures = Figures;
 	
-	RTL_Material RTL_Materials_Array[4];
+	RTL_Material RTL_Materials_Array[5];
 	RTL_Materials_Array[0] = RTL_Create_Metal_Material(float3(0.1, 0.3, 0.8), 0.2);
 	RTL_Materials_Array[1] = RTL_Create_Lambertian_Material(float3(0.7, 0.1, 0.1));
 	RTL_Materials_Array[2] = RTL_Create_Lambertian_Material(float3(0.75, 0.75, 0.05));
 	RTL_Materials_Array[3] = RTL_Create_Dielectric_Material(float3(1, 1, 1), 1.5);
+	RTL_Materials_Array[4] = RTL_Create_Ceramic_Material(float3(1, 1, 1), 0, 2);
 	/*
 	RTL_Figure RTL_Figures_Array[50];
 	RTL_Figures_Array[0] = RTL_Create_Box(float3(0, 0, 0), float3(0.5, 0.5, 0.5), 0);
@@ -108,7 +109,7 @@ void main( uint3 dispatchThreadID : SV_DispatchThreadID, uint3 groupThreadID : S
 	RTL_Figures_Array[1] = RTL_Create_Sphere(Figures[1].position.xyz, Figures[1].shape.x, 0);
 	RTL_Figures_Array[2] = RTL_Create_Sphere(Figures[2].position.xyz, Figures[2].shape.x, 2);
 	RTL_Figures_Array[3] = RTL_Create_Sphere(Figures[3].position.xyz, Figures[3].shape.x, 3);
-	RTL_Figures_Array[4] = RTL_Create_Box(Figures[4].position.xyz, Figures[4].shape.xyz, 1);
+	RTL_Figures_Array[4] = RTL_Create_Sphere(Figures[4].position.xyz, Figures[4].shape.x, 4);
 	
 	
 	float3 setOrigin = float3(0, -0.5, 0);

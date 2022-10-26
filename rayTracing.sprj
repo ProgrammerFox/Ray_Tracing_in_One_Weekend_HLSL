@@ -3,7 +3,7 @@
 	<pipeline>
 		<pass name="Compute" type="compute" active="true">
 			<shader type="cs" path="shaders\compute.hlsl" entry="main" />
-			<groupsize x="80" y="45" z="1" />
+			<groupsize x="120" y="68" z="1" />
 			<variables>
 				<variable type="float" name="roll" system="Time" />
 				<variable type="int" name="RefreshImage">
@@ -70,13 +70,13 @@
 	</objects>
 	<cameras />
 	<settings>
-		<entry type="property" name="HDRI-S\spaichingen_hill_4k_mega_dark.tga" item="image3D" />
+		<entry type="property" name="Compute" item="pipe" />
 		<entry type="file" name="Compute" shader="cs" />
 		<entry type="pinned" name="RefreshImage" owner="Compute" />
 		<entry type="camera" fp="false">
-			<distance>7</distance>
-			<pitch>9</pitch>
-			<yaw>219</yaw>
+			<distance>8</distance>
+			<pitch>6</pitch>
+			<yaw>298</yaw>
 			<roll>360</roll>
 		</entry>
 		<entry type="clearcolor" r="0" g="0" b="0" a="0" />
